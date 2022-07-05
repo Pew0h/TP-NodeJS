@@ -1,13 +1,26 @@
-const http = require('http');
+/* Packages */
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
 
-const hostname = 'localhost';
-const port = 3000;
+/* GLOBAL VARIABLES */
+const port = 3001;
+const MONGODB_URL = 'mongodb+srv://root:root@cluster0.xzbb0.mongodb.net/test';
+mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+const database = mongoose.connection;
 
-const httpServer = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World\n');
+database.on('error', (error) => {
+    console.log('ERROR', error);
 });
 
-httpServer.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+database.once('open', () => {
+    console.log('Connected to database');
+});
+
+app.get('/', (req, res) => {
+    res.send('TEST');
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
