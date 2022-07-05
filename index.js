@@ -1,9 +1,10 @@
 /* Packages */
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
+const router = require('./routes');
 
 /* GLOBAL VARIABLES */
+const app = express();
 const port = 3001;
 const MONGODB_URL = 'mongodb+srv://root:root@cluster0.xzbb0.mongodb.net/test';
 mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -20,6 +21,8 @@ database.once('open', () => {
 app.get('/', (req, res) => {
     res.send('TEST');
 });
+
+app.use('/api', router);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
